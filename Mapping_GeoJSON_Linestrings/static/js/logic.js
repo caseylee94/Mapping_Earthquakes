@@ -40,8 +40,9 @@
 //   }
 // }).addTo(map);
 
+
 // We create the tile layer that will be the background of our map.
-let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+let light = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     accessToken: API_Key
@@ -56,54 +57,38 @@ attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap
 
 // Create a base layer that holds both maps.
 let baseMaps = {
-  Street: streets,
+  Light: light,
   Dark: dark
 };
 
 // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
-  center: [30, 30],
+  center: [44.0, -80.0],
   zoom: 2,
-  layers: [streets]
+  layers: [light]
 })
 
 // Pass our map layers into our layers control and add the layers control to the map.
 L.control.layers(baseMaps).addTo(map);
 
-// Add the airport data
-let airportData = "https://raw.githubusercontent.com/caseylee94/Mapping_Earthquakes/main/majorAirports.json";
+// Add the airport data for Toronto
+let torontoData = "https://raw.githubusercontent.com/caseylee94/Mapping_Earthquakes/main/torontoRoutes.json";
+
+// Create a style for the lines.
+let myStyle = {
+  color: "#ffffa1",
+  weight: 2
+}
 
 // Grabbing our GeoJSON data
-d3.json(airportData).then(function(data) {
+d3.json(torontoData).then(function(data) {
   console.log(data);
   //Creating a geoJSON data with the retrieved layer
-  L.geoJSON(data).addTo(map);
+L.geoJSON(data, {
+  style: myStyle,
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup("<h3> Airline: " + feature.properties.airline + "</h3> <hr> <h2> Destination: "
+    +feature.properties.dst + "</h3>");
+  }
+}).addTo(map);
 });
-
-
-
-
-// // Create a polyline using the line coordinates and make the line red.
-// L.polyline(line, {
-//     color: "yellow"
-//   }).addTo(map);
-
-// // Get data from cities.js
-// let cityData = cities;
-
-// // Loop through the cities array and create one marker for each city.
-// cityData.forEach(function(city) {
-//     console.log(city);
-//     L.circleMarker(city.location, {
-//         radius: city.population/200000,
-//         color: "orange",
-//         fillColor: 'orange'
-//     })
-//     .bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
-//     .addTo(map);
-//    });
-// //     {
-// //     radius: 300,
-// //     color: "yellow",
-// //     fillColor: '#fffa1'
-// //  }).addTo(map);
