@@ -15,4 +15,8 @@ Software:
 * D3.js library
 * Mapbox API
 
-## Results
+Data Sources:
+
+* [Earthquakes Past 7 Days](https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson)
+* [Earthquakes with a magnitude greater than 4.5](https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson) 
+* [Tectonic Plate](https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json)
